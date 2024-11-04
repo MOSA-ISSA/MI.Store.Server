@@ -1,8 +1,10 @@
 require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
+const Routes = require('./api/routes/_router');
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const mongooseLink = process.env.MI_STORE_MONGOOSE_LINK;
 
@@ -44,5 +46,7 @@ process.on('SIGINT', async () => {
     await mongoose.connection.close();
     process.exit(0);
 });
+
+app.use("/",Routes)
 
 module.exports = app;
