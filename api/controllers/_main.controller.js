@@ -63,10 +63,6 @@ const get_all_module_names = async (module, req, res) => {
 
 const get_all_module_id_names = async (module, req, res) => {
     try {
-        // const data = await find_modules(module, req)
-        // const moduleIdNames = data.map(module => {
-        //     return { _id: module._id, name: module.name }
-        // });
         const data = await module.find(req.query, { name: 1, _id: 1 }).lean();
         res?.status(200).json({ success: true, data: data || [] });
         return data

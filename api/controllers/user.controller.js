@@ -3,7 +3,6 @@ const user_module = require("../modules/user.model");
 const { add_module, get_all_module_id_names, update_module } = require("./_main.controller");
 
 const createUser = async (req, res) => {
-    console.log('req.body:', req);
     try {
         const newUser = await add_module(user_module, req, res)
         return newUser;
