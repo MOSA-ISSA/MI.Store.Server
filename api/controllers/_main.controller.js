@@ -10,7 +10,7 @@ const check_body = async (body, res) => {
 const find_modules = async (module, req, res) => {
     try {
         const data = await module.find(req.query);
-        res?.status(401).json({ success: true, data: data || [] });
+        res?.status(200).json({ success: true, data: data || [] });
         return data
     } catch (error) {
         console.error(error.message);
