@@ -17,24 +17,22 @@ const userSchema = new mongoose.Schema({
         maxlength: 20,
         match: /^[a-zA-Z]+( [a-zA-Z]+)*$/ // validation make it clear in the ui
     },
-    phone: {
-        type: String,
-        required: [function () {
-            return !this.email; // Phone is required if email is not provided
-        }, 'Please enter your phone number or email.'],
-        unique: [true, 'This phone number already exists'],
-        minlength: 9,
-        maxlength: 15,
-        // match: validatePhone later
-    },
     email: {
         type: String,
-        required: [function () {
-            return !this.phone; // Email is required if phone is not provided
-        }, 'Please enter your email or phone number.'],
-        unique: [true, 'This email already exists'],
-        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email is not valid'], // Optional: basic email format validation
+        required: [true, 'please enter your email'],
+        unique: true,
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email is not valid'],
+        lowercase: true,
+        trim: true,
     },
+    // phone: {
+    //     type: String,
+    //     required: [true, 'please enter your phone number'],
+    //     // unique: [true, 'This phone number already exists'],
+    //     minlength: 9,
+    //     maxlength: 15,
+    //     // match: validatePhone later
+    // },
     password: {
         type: String,
         required: true,
@@ -51,7 +49,7 @@ const userSchema = new mongoose.Schema({
     },
     role: { type: String, enum: ["customer", "admin"], default: "customer" },
     address: { type: addressSchema },
-    _active: { type: Boolean, default: true, }
+    _active: { type: Boolean, default: false, }
 }, { timestamps: true });
 
 userSchema.pre("save", async function (next) {
@@ -60,6 +58,14 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
     return
+});
+
+userSchema.post('save', function (error, doc, next) {
+    if (error.name === 'MongoServerError' && error.code === 11000) {
+        next(new Error('This email already exists.'));
+    } else {
+        next(error);
+    }
 });
 
 const user_module = mongoose.model('user', userSchema);

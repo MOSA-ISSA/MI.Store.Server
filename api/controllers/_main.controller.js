@@ -42,7 +42,7 @@ const add_module = async (module, req, res) => {
         return data
     } catch (error) {
         const { message } = error;
-        res&&res?.status(500).json({ success: false, message });
+        res&&res?.status(403).json({ success: false, message });
         console.error(message);
         return { success: false, message }
     }
