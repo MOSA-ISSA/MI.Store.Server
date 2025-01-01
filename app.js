@@ -4,9 +4,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 // const Routes = require('./api/routes/_router');
 const app = express();
-app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+// app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
