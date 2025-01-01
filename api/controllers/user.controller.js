@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const user_module = require("../modules/user.model");
 const { add_module, get_all_module_id_names, update_module } = require("./_main.controller");
-const { use } = require("../routes/category.router");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -70,7 +69,7 @@ const sendVerificationEmail = async (recipientEmail, EncryptUser) => {
                 <div style="font-family: Arial, sans-serif; text-align: center;">
                     <p>Please click the button below to verify your email:</p>
                     <a 
-                    href="${process.env.WEB_LINK_LOCAL}Activation?token=${encodeURIComponent(EncryptUser)}"
+                    href="${process.env.WEB_LINK}Activation?token=${encodeURIComponent(EncryptUser)}"
                     style="
                         background-color: #4CAF50; 
                         color: white; 
