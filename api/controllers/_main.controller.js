@@ -21,9 +21,7 @@ const find_modules = async (module, req, res) => {
 
 const find_one_module = async (module, req, res) => {
     try {
-        let can = await check_body(req.body, res)
-        if (!can) return false
-        const data = can ? await module.findOne(req.body) : {};
+        const data = await module.findOne(req.body);
         res?.status(200).json({ success: true, data: data || null });
         return data
     } catch (error) {
@@ -38,11 +36,11 @@ const add_module = async (module, req, res) => {
     if (!(await check_body(body, res))) return false;
     try {
         const data = await module.create(req.body);
-        res&&res?.status(200).json({ success: true, data });
+        res && res?.status(200).json({ success: true, data });
         return data
     } catch (error) {
         const { message } = error;
-        res&&res?.status(403).json({ success: false, message });
+        res && res?.status(403).json({ success: false, message });
         console.error(message);
         return { success: false, message }
     }
