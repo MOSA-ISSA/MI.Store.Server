@@ -2,11 +2,11 @@ require('dotenv').config();
 const cors = require('cors')
 const express = require("express");
 const mongoose = require("mongoose");
-// const Routes = require('./api/routes/_router');
+const Routes = require('./api/routes/_router');
 const app = express();
 app.use(express.json());
 app.use(cors());
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -60,6 +60,6 @@ app.get('/test', async (req, res) => {
     res.status(200).json({ success: true, message: "test successful" });
 });
 
-// app.use("/", Routes)
+app.use("/", Routes)
 
 module.exports = app;
