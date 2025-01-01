@@ -68,6 +68,23 @@ const getAllProductsNameId = async (req, res) => {
     return get_all_module_id_names(product_module, req, res)
 }
 
+const searchProducts = async (req, res) => {
+    try {
+        const { query } = req.query || { query: '' };
+        const products = await product_module.find({
+            ['$or']: [
+                { name: { $regex: query, $options: 'i' } },
+            ]
+        })
+        res.status(200).json({ success: true, data: products });
+        return products
+    }
+    catch (e) {
+        console.error(e.message);
+        res.status(500).json({ success: false, error: e.message });
+    }
+}
+
 const deleteProduct = async (req, res) => {
     // return delete_module(product_module, req, res)
 }
@@ -79,5 +96,6 @@ module.exports = {
     addProducts,
     getOneProduct,
     getAllProductsNameId,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 }

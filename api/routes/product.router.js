@@ -9,5 +9,6 @@ productRouter.get("/getOneProduct", productController.getOneProduct);
 productRouter.get("/getAllProductsNameId", productController.getAllProductsNameId);
 productRouter.delete("/deleteProduct", productController.deleteProduct);
 productRouter.patch("/updateProduct", productController.updateProduct);
+productRouter.get("/searchProducts", productController.searchProducts);
 
 module.exports = productRouter
