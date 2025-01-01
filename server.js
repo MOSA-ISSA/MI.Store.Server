@@ -1,12 +1,11 @@
 const http = require("http");
 const app = require("./app");
-
-// const port = <port number> //local
-const port = process.env.port||2999;//not local
-//example port
-
+const port = process.env.port || 2999; l
 const server = http.createServer(app);
 
-module.exports = server;
-
 // app.listen(port);
+// server.listen(port, () => {
+//     console.log(`Server running on port ${port}`);
+// });
+
+module.exports = server;
