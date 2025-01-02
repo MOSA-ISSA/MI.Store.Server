@@ -64,38 +64,38 @@ const sendVerificationEmail = async (recipientEmail, EncryptUser) => {
                 sender: { name: "MOSA ISSA", email: "mosasenio@gmail.com" },
                 to: [{ email: recipientEmail }],
                 subject: "Email Verification Code",
-                // htmlContent: `<p>Your verification code is: <strong>${verificationCode}</strong></p>`
                 htmlContent: `
-                <div style="font-family: Arial, sans-serif; text-align: center;">
-                    <p>Please click the button below to verify your email:</p>
-                    <a 
-                    href="${process.env.WEB_LINK}Activation?token=${encodeURIComponent(EncryptUser)}"
-                    style="
-                        background-color: #4CAF50; 
-                        color: white; 
-                        padding: 10px 20px; 
-                        text-decoration: none; 
-                        border-radius: 5px;
-                        display: inline-block;
-                        margin-top: 10px;">
-                    Verify Email
-                    </a>
-                </div>
+                    <div style="font-family: Arial, sans-serif; text-align: center;">
+                        <p>Please click the button below to verify your email:</p>
+                        <a 
+                        href="https://mi-store-rose.vercel.app/Activation?token=${encodeURIComponent(EncryptUser)}"
+                        style="
+                            background-color: #4CAF50; 
+                            color: white; 
+                            padding: 10px 20px; 
+                            text-decoration: none; 
+                            border-radius: 5px;
+                            display: inline-block;
+                            margin-top: 10px;">
+                        Verify Email
+                        </a>
+                    </div>
                 `
             })
         });
 
+        const responseData = await response.json(); // Parse response body for debugging
+
         if (response.ok) {
-            console.log('Email sent successfully!');
-            return "Email sent successfully!"
+            console.log('✅ Email sent successfully:', responseData);
+            return "Email sent successfully!";
         } else {
-            const errorData = await response.json();
-            console.error('Failed to send email:', errorData);
-            return errorData
+            console.error('❌ Failed to send email:', response.status, responseData);
+            return responseData;
         }
     } catch (error) {
-        console.error('Error:', error);
-        return JSON.stringify(error)
+        console.error('🚨 Error:', error.message);
+        return JSON.stringify(error.message);
     }
 };
 
@@ -109,7 +109,7 @@ const sendVerification = async (req, res) => {
         console.log(req?.body);
         const user = await user_module.findOne({ email: req?.body?.email });
         if (user) {
-            const EncryptUser = jwt.sign({...user._doc}, SECRET_KEY);
+            const EncryptUser = jwt.sign({ ...user._doc }, SECRET_KEY);
             const result = await sendVerificationEmail(req?.body?.email, EncryptUser);
             res.status(200).json({
                 success: true,
@@ -134,5 +134,6 @@ module.exports = {
     login,
     updateUser,
     activateUser,
-    sendVerification
+    sendVerification,
+    sendVerificationEmail
 }
