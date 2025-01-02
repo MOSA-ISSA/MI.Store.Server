@@ -3,6 +3,7 @@ const cors = require('cors')
 const express = require("express");
 const mongoose = require("mongoose");
 const Routes = require('./api/routes/_router');
+const { sendVerificationEmail } = require('./api/controllers/user.controller');
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -57,7 +58,8 @@ process.on('SIGINT', async () => {
 });
 
 app.get('/test', async (req, res) => {
-    res.status(200).json({ success: true, message: "test successful" });
+    const result = await sendVerificationEmail("mosasenio@gmail.com", "test");
+    res.status(200).json({ success: true, message: "test successful", data: result });
 });
 
 app.use("/", Routes)
