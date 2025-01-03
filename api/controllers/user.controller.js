@@ -58,7 +58,7 @@ const sendVerificationEmail = async (recipientEmail, EncryptUser) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'api-key': "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"
+                'api-key': process.env.BREVO_API_KEY
             },
             body: JSON.stringify({
                 sender: { name: "MOSA ISSA", email: "mosasenio@gmail.com" },
