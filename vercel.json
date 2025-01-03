@@ -11,5 +11,11 @@
             "src": "/(.*)",
             "dest": "server.js"
         }
-    ]
+    ],
+    "env": {
+        "MI_STORE_MONGOOSE_LINK": "mongodb+srv://mi_store:ma741369!@storedata.puo6l.mongodb.net/",
+        "BREVO_API_KEY": "@brevo_api_key",
+        "SECRET_KEY": "MI2999",
+        "WEB_LINK": "https://mi-store-rose.vercel.app/"
+    }
 }
