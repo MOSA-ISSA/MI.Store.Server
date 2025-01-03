@@ -57,7 +57,7 @@ process.on('SIGINT', async () => {
     process.exit(0);
 });
 
-app.get('/test', async (req, res) => {
+app.get('/send-verification-email', async (req, res) => {
     const result = await sendVerificationEmail("mosasenio@gmail.com", "test");
     res.status(200).json({ success: true, message: "test successful", data: result });
 });
