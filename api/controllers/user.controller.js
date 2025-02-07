@@ -68,7 +68,7 @@ const sendVerificationEmail = async (recipientEmail, EncryptUser) => {
                     <div style="font-family: Arial, sans-serif; text-align: center;">
                         <p>Please click the button below to verify your email:</p>
                         <a 
-                        href="https://mi-store-rose.vercel.app/Activation?token=${encodeURIComponent(EncryptUser)}"
+                        href="https://canvas-48.vercel.app/Activation?token=${encodeURIComponent(EncryptUser)}"
                         style="
                             background-color: #4CAF50; 
                             color: white; 

@@ -20,8 +20,9 @@ const find_modules = async (module, req, res) => {
 }
 
 const find_one_module = async (module, req, res) => {
+    const get = req?.query || req.body;
     try {
-        const data = await module.findOne(req.body);
+        const data = await module.findOne(get);
         res?.status(200).json({ success: true, data: data || null });
         return data
     } catch (error) {
