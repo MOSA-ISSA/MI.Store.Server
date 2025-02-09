@@ -4,6 +4,7 @@ const userRouter = express.Router();
 
 userRouter.post("/createUser", userController.createUser);
 userRouter.get("/getAllUsersNameId", userController.getAllUsersNameId);
+userRouter.get("/getUser", userController.getUser);
 userRouter.post("/login", userController.login);
 userRouter.patch("/updateUser", userController.updateUser);
 userRouter.patch("/activateUser", userController.activateUser);

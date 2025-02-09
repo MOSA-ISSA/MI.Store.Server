@@ -1,9 +1,11 @@
+require('dotenv').config();
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const user_module = require("../modules/user.model");
-const { add_module, get_all_module_id_names, update_module } = require("./_main.controller");
+const { add_module, get_all_module_id_names, update_module, find_one_module } = require("./_main.controller");
 
 const SECRET_KEY = process.env.SECRET_KEY;
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
 const createUser = async (req, res) => {
     try {
@@ -44,6 +46,10 @@ const login = async (req, res) => {
     }
 };
 
+const getUser = async (req, res) => {
+    return find_one_module(user_module, req, res)
+}
+
 const updateUser = async (req, res) => {
     return update_module(user_module, '$set', req, res)
 }
@@ -58,7 +64,7 @@ const sendVerificationEmail = async (recipientEmail, EncryptUser) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'api-key': process.env.BREVO_API_KEY
+                'api-key': BREVO_API_KEY
             },
             body: JSON.stringify({
                 sender: { name: "MOSA ISSA", email: "mosasenio@gmail.com" },
@@ -88,10 +94,10 @@ const sendVerificationEmail = async (recipientEmail, EncryptUser) => {
 
         if (response.ok) {
             console.log('✅ Email sent successfully:', responseData);
-            return "Email sent successfully!";
+            return { success: true, ...responseData }
         } else {
             console.error('❌ Failed to send email:', response.status, responseData);
-            return responseData;
+            return { success: false, ...responseData };
         }
     } catch (error) {
         console.error('🚨 Error:', error.message);
@@ -111,11 +117,19 @@ const sendVerification = async (req, res) => {
         if (user) {
             const EncryptUser = jwt.sign({ ...user._doc }, SECRET_KEY);
             const result = await sendVerificationEmail(req?.body?.email, EncryptUser);
-            res.status(200).json({
-                success: true,
-                message: "Email sent successfully!",
-                data: result,
-            });
+            if (result.success) {
+                res.status(200).json({
+                    success: true,
+                    message: "Email sent successfully!",
+                    data: result,
+                });
+            } else {
+                res.status(500).json({
+                    success: false,
+                    message: "Failed to send email",
+                    data: result,
+                });
+            }
         }
         else {
             console.log("mail not found");
@@ -135,5 +149,6 @@ module.exports = {
     updateUser,
     activateUser,
     sendVerification,
-    sendVerificationEmail
+    sendVerificationEmail,
+    getUser
 }
