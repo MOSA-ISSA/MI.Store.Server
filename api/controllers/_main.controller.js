@@ -47,6 +47,19 @@ const add_module = async (module, req, res) => {
     }
 }
 
+const delete_module = async (module, req, res) => {
+    const get = req?.query || req.body;
+    try {
+        const data = await module.deleteOne(get);
+        res?.status(200).json({ success: !!data, data: data || null });
+        return data
+    } catch (error) {
+        console.error(error.message);
+        res?.status(500).json({ error: error.message });
+        return false
+    }
+}
+
 const get_all_module_names = async (module, req, res) => {
     try {
         const data = await find_modules(module, req)
@@ -108,5 +121,6 @@ module.exports = {
     update_module,
     get_all_module_names,
     get_all_module_id_names,
-    set_activate_module
+    set_activate_module,
+    delete_module
 }
